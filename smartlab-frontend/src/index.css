@@ -1,0 +1,87 @@
+/* smartlab-frontend/src/index.css */
+
+/* 1. TEMA CLARO (Inalterado, mas listado para referência) */
+:root {
+  --bg-color: #F7F9FC;
+  --bg-color-alt: #FFFFFF;
+  --text-color: #1F2933;
+  --text-color-muted: #4B5563;
+  --border-color: #E3EAF2;
+  --primary-color: #2F80ED;
+  --primary-text-color: #FFFFFF;
+  --success-color: #27AE60;
+  --error-color: #EB5757;
+  --warning-color: #F2994A;
+  --warning-text-color: #1F2933;
+  --cancel-color: #F2C94C;
+
+  /* Específicos do Dashboard */
+  --list-item-bg: #E3EAF2;
+  --list-item-border: var(--primary-color);
+  --form-container-bg: #E3EAF2;
+  --form-container-border: var(--primary-color);
+  --chart-grid-color: rgba(0, 0, 0, 0.05);
+  --chart-text-color: #1F2933;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color-light: rgba(47, 128, 237, 0.2);
+}
+
+/* 2. TEMA ESCURO (PALETA DE ALTA VISIBILIDADE - ATUALIZADA) 
+   Nós trocamos os fundos pretos por tons de azul-acinzentado escuro
+   e aumentamos o brilho das bordas para criar separação.
+*/
+body.dark-mode {
+  --bg-color: #111827;             /* Fundo: Azul-escuro (em vez de preto) */
+  --bg-color-alt: #1F2937;         /* Cards: Azul-acinzentado (mais claro que o fundo) */
+  --text-color: #E5E7EB;           /* Texto: Cinza-claro (quase branco) */
+  --text-color-muted: #9CA3AF;     /* Texto Mudo: Cinza-médio (bom contraste) */
+  --border-color: #374151;         /* Bordas: Cinza-escuro (VISÍVEL contra os cards) */
+  --primary-color: #4A90E2;        /* Azul-claro para destaque */
+  --primary-text-color: #FFFFFF;
+  --success-color: #2ECC71;
+  --error-color: #E74C3C;
+  --warning-color: #F39C12;
+  --warning-text-color: #1F2933;
+  --cancel-color: #F39C12;
+
+  /* Específicos do Dashboard */
+  --list-item-bg: #111827;         /* Fundo do item de lista (igual ao fundo principal) */
+  --list-item-border: var(--primary-color);
+  --form-container-bg: #111827;    /* Fundo do form (igual ao fundo principal) */
+  --form-container-border: var(--primary-color);
+  --chart-grid-color: #374151;     /* Cor da grade do gráfico (igual à borda) */
+  --chart-text-color: #E5E7EB;     /* Cor do texto do gráfico (igual ao texto principal) */
+  --shadow-color: rgba(0, 0, 0, 0.3); /* Sombra mais escura para dar profundidade */
+  --shadow-color-light: rgba(74, 144, 226, 0.3); /* Sombra do "neon" azul */
+}
+
+
+/* 3. Estilos Base do Body (Inalterado) */
+body {
+  margin: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* inverte ícones pretos no modo escuro.
+*/
+body.dark-mode .toggle-icon  {
+  filter: invert(1);
+}
+/* exclusivamente do botão sair sidebar
+*/
+body.dark-mode .theme-icon-invert {
+  filter: invert(1);
+}
