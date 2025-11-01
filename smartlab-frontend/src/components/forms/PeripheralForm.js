@@ -1,7 +1,8 @@
 // smartlab-frontend/src/components/forms/PeripheralForm.js
 import React, { useState } from 'react';
 
-const PeripheralForm = ({ peripheral, onSave, onCancel, styles }) => {
+// 1. Recebe 'commonStyles'
+const PeripheralForm = ({ peripheral, onSave, onCancel, commonStyles }) => {
     const [name, setName] = useState(peripheral?.name || '');
     const [description, setDescription] = useState(peripheral?.description || '');
     const [quantity, setQuantity] = useState(peripheral?.quantity || '');
@@ -12,24 +13,25 @@ const PeripheralForm = ({ peripheral, onSave, onCancel, styles }) => {
     };
 
     return (
-      <div style={styles.formContainer}>
-        <h4 style={styles.subSectionTitle}>{peripheral ? 'Editar Periférico' : 'Adicionar Novo Periférico'}</h4>
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nome:</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required style={styles.input} />
+      // 2. Usa 'className'
+      <div className={commonStyles.formContainer}>
+        <h4 className={commonStyles.subSectionTitle}>{peripheral ? 'Editar Periférico' : 'Adicionar Novo Periférico'}</h4>
+        <form onSubmit={handleSubmit} className={commonStyles.form}>
+          <div className={commonStyles.formGroup}>
+            <label className={commonStyles.label}>Nome:</label>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className={commonStyles.input} />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Descrição:</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ ...styles.input, height: '60px' }} />
+          <div className={commonStyles.formGroup}>
+            <label className={commonStyles.label}>Descrição:</label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} className={commonStyles.textarea} />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Quantidade:</label>
-            <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} required min="1" style={styles.input} />
+          <div className={commonStyles.formGroup}>
+            <label className={commonStyles.label}>Quantidade:</label>
+            <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} required min="1" className={commonStyles.input} />
           </div>
-          <div style={styles.buttonGroup}>
-            <button type="submit" style={styles.submitButton}>Salvar</button>
-            <button type="button" onClick={onCancel} style={styles.cancelButton}>Cancelar</button>
+          <div className={commonStyles.buttonGroup}>
+            <button type="submit" className={commonStyles.submitButton}>Salvar</button>
+            <button type="button" onClick={onCancel} className={commonStyles.cancelButton}>Cancelar</button>
           </div>
         </form>
       </div>

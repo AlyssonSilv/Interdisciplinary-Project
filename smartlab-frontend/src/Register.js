@@ -1,6 +1,8 @@
 // smartlab-frontend/src/Register.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './Register.module.css'; // 1. Importar o CSS Module
+import logo from './assets/smartlab-logo.png'; // 2. Importar o logo (ajuste este caminho se usar outro logo)
 
 const Register = ({ onNavigateToLogin }) => {
   const [ra, setRa] = useState('');
@@ -68,182 +70,71 @@ const Register = ({ onNavigateToLogin }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Cadastro de Usuário - SmartLab</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="ra" style={styles.label}>RA:</label>
+    // 3. Usar 'className' com os 'styles' importados
+    <div className={styles.container}>
+      <img src={logo} alt="SmartLab Logo" className={styles.logo} />
+      <h2 className={styles.title}>Cadastro de Usuário - SmartLab</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="ra" className={styles.label}>RA:</label>
           <input
             type="text"
             id="ra"
             value={ra}
             onChange={(e) => setRa(e.target.value)}
             required
-            style={styles.input}
+            className={styles.input}
             placeholder="Ex: 1234 (Admin), 123456 (Aluno), 1-23456 (Professor)"
           />
-          {raValidationMessage && <p style={styles.raErrorMessage}>{raValidationMessage}</p>}
+          {raValidationMessage && <p className={styles.raErrorMessage}>{raValidationMessage}</p>}
           {inferredRole && !raValidationMessage && (
-            <p style={styles.inferredRoleMessage}>Seu tipo de usuário será: <strong>{inferredRole}</strong></p>
+            <p className={styles.inferredRoleMessage}>Seu tipo de usuário será: <strong>{inferredRole}</strong></p>
           )}
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="name" style={styles.label}>Nome:</label>
+        <div className={styles.formGroup}>
+          <label htmlFor="name" className={styles.label}>Nome:</label>
           <input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            style={styles.input}
+            className={styles.input}
           />
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email:</label>
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={styles.input}
+            className={styles.input}
           />
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>Senha:</label>
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>Senha:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={styles.input}
+            className={styles.input}
           />
         </div>
-        <button type="submit" style={styles.button} disabled={!inferredRole}>Registrar</button>
+        <button type="submit" className={styles.button} disabled={!inferredRole}>Registrar</button>
       </form>
-      {message && <p style={message.includes('Erro') ? styles.errorMessage : styles.successMessage}>{message}</p>}
-      <p style={styles.linkText}>
+      {message && <p className={message.includes('Erro') ? styles.errorMessage : styles.successMessage}>{message}</p>}
+      <p className={styles.linkText}>
         Já tem uma conta?{' '}
-        <span onClick={onNavigateToLogin} style={styles.link}>Faça login aqui</span>
+        <span onClick={onNavigateToLogin} className={styles.link}>Faça login aqui</span>
       </p>
     </div>
   );
 };
 
-const styles = {
-  container: {
-    fontFamily: "'Roboto', sans-serif",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#F7F9FC', /* Fundo principal */
-    padding: '2rem',
-    boxSizing: 'border-box',
-  },
-  title: {
-    fontSize: '2.5rem',
-    marginBottom: '2rem',
-    color: '#1F2933', /* Texto principal escuro */
-    textShadow: '0 0 10px rgba(47, 128, 237, 0.5)', /* Efeito neon sutil */
-  },
-  form: {
-    backgroundColor: '#FFFFFF', /* Cards e seções: branco */
-    padding: '2.5rem',
-    borderRadius: '12px',
-    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)', /* Sombra mais suave */
-    width: '100%',
-    maxWidth: '450px',
-    border: '1px solid #E3EAF2', /* Borda cinza-azulado neutro */
-  },
-  formGroup: {
-    marginBottom: '1.5rem',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '0.6rem',
-    fontWeight: '500',
-    color: '#4B5563', /* Texto secundário */
-    fontSize: '0.95rem',
-  },
-  input: {
-    width: '100%',
-    padding: '0.8rem 1rem',
-    border: '1px solid #9CA3AF', /* Desabilitado/placeholder para borda sutil */
-    borderRadius: '8px',
-    boxSizing: 'border-box',
-    backgroundColor: '#FFFFFF', /* Fundo input branco */
-    color: '#1F2933', /* Texto input escuro */
-    fontSize: '1rem',
-    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-  },
-  inputFocus: {
-    borderColor: '#2F80ED', /* Azul-claro profissional no foco */
-    boxShadow: '0 0 10px rgba(47, 128, 237, 0.6)',
-    outline: 'none',
-  },
-  button: {
-    width: '100%',
-    padding: '1rem',
-    backgroundColor: '#2F80ED', /* Azul-claro profissional */
-    color: '#FFFFFF', /* Texto branco para contraste */
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    marginTop: '1rem',
-    transition: 'background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease',
-  },
-  buttonHover: {
-    backgroundColor: '#256DCC', /* Azul um pouco mais escuro no hover */
-    transform: 'translateY(-2px)',
-    boxShadow: '0 6px 20px rgba(47, 128, 237, 0.4)',
-  },
-  successMessage: {
-    color: '#27AE60', /* Verde-claro clínico */
-    marginTop: '1.5rem',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textShadow: '0 0 8px rgba(39, 174, 96, 0.5)',
-  },
-  errorMessage: {
-    color: '#EB5757', /* Vermelho alerta */
-    marginTop: '1.5rem',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textShadow: '0 0 8px rgba(235, 87, 87, 0.5)',
-  },
-  raErrorMessage: {
-    color: '#EB5757', /* Vermelho alerta */
-    fontSize: '0.8rem',
-    marginTop: '0.5rem',
-    marginBottom: '0',
-    textShadow: '0 0 5px rgba(235, 87, 87, 0.3)',
-  },
-  inferredRoleMessage: {
-    color: '#27AE60', /* Verde-claro clínico */
-    fontSize: '0.85rem',
-    marginTop: '0.5rem',
-    marginBottom: '0',
-    textShadow: '0 0 5px rgba(39, 174, 96, 0.3)',
-  },
-  linkText: {
-    marginTop: '1.5rem',
-    fontSize: '0.95rem',
-    color: '#4B5563', /* Texto secundário */
-  },
-  link: {
-    color: '#2F80ED', /* Azul-claro profissional para links */
-    cursor: 'pointer',
-    textDecoration: 'underline',
-    transition: 'color 0.3s ease',
-  },
-  linkHover: {
-    color: '#256DCC',
-  },
-};
+// 4. Remover o objeto 'const styles = { ... }' daqui.
 
 export default Register;

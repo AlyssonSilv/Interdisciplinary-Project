@@ -1,6 +1,6 @@
 // smartlab-frontend/src/Dashboard.js
-import React, { useState, useEffect, useRef } from 'react'; 
-// ... (imports inalterados)
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+// ... (imports de chart.js, assets, hooks, etc. inalterados)
 import {
   Chart as ChartJS,
   CategoryScale, LinearScale, BarElement, LineElement, PointElement,
@@ -9,7 +9,13 @@ import {
 import expandIcon from './assets/expand-icon.png';
 import collapseIcon from './assets/collapse-icon.png';
 import logoutIcon from './assets/sair.png';
-import styles from './Dashboard.styles.js';
+
+// 1. REMOVER a importação de styles.js
+// import styles from './Dashboard.styles.js'; 
+// 2. ADICIONAR importações de CSS Module
+import commonStyles from './styles/Common.module.css';
+import dashStyles from './Dashboard.module.css';
+
 import Sidebar from './components/layout/Sidebar';
 import AlunoDashboard from './components/dashboard/AlunoDashboard';
 import ProfessorDashboard from './components/dashboard/ProfessorDashboard';
@@ -27,6 +33,7 @@ ChartJS.register(
 
 const Dashboard = ({ user, onLogout }) => {
   
+  // ... (hooks inalterados)
   const {
     loading, error, refreshDashboardData,
     ...dataProps
@@ -37,35 +44,34 @@ const Dashboard = ({ user, onLogout }) => {
   const adminProps = useAdminManagement(refreshDashboardData);
 
   const { theme } = useTheme();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  // 3. Lógica de Responsividade
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768); // Aberta em desktop, fechada em mobile
+  
   const [activeSection, setActiveSection] = useState('top');
   const sectionRefs = useRef({});
   const mainContentRef = useRef(null);
   
-  // Estados de UI
+  // ... (Estados de UI inalterados)
   const [showMyBookingsSection, setShowMyBookingsSection] = useState(true);
   const [showPendingBookingsSection, setShowPendingBookingsSection] = useState(true);
   const [showAllBookingsSection, setShowAllBookingsSection] = useState(true);
   const [showUpcomingBookingsSection, setShowUpcomingBookingsSection] = useState(true);
   const [showNewBookingSection, setShowNewBookingSection] = useState(true);
   const [showAnalyticsSection, setShowAnalyticsSection] = useState(true);
-
-  // Agrupado para ALUNO
+  
+  // ... (Agrupamentos de UI inalterados)
   const alunoUiState = {
     showMyBookingsSection, setShowMyBookingsSection,
     showUpcomingBookingsSection, setShowUpcomingBookingsSection,
     showNewBookingSection, setShowNewBookingSection,
   };
-  
-  // Agrupado para PROFESSOR
   const profUiState = {
     showMyBookingsSection, setShowMyBookingsSection,
     showPendingBookingsSection, setShowPendingBookingsSection,
     showUpcomingBookingsSection, setShowUpcomingBookingsSection,
-    // showNewBookingSection será controlado dentro do ProfessorDashboard
   };
-
-  // Agrupado para ADMIN
   const adminUiState = {
     showPendingBookingsSection, setShowPendingBookingsSection,
     showAllBookingsSection, setShowAllBookingsSection,
@@ -75,7 +81,22 @@ const Dashboard = ({ user, onLogout }) => {
   
   const icons = { collapseIcon, expandIcon };
 
-  // ... (hooks de efeito e scroll inalterados) ...
+  // 4. Efeito para lidar com redimensionamento (responsividade)
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Se estava no desktop e foi para mobile, fecha a sidebar
+      // Se estava no mobile e foi para desktop, abre a sidebar
+      setIsSidebarOpen(!mobile);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  // ... (useEffect de scroll inalterados) ...
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
     return () => {
@@ -117,33 +138,51 @@ const Dashboard = ({ user, onLogout }) => {
   const handleNavLinkClick = (sectionIdWithHash) => {
       const sectionId = sectionIdWithHash.substring(1);
       setActiveSection(sectionId);
+      // 5. Se for mobile, fecha a sidebar ao clicar no link
+      if (isMobile) {
+        setIsSidebarOpen(false);
+      }
   };
 
 
+  // 6. Passa a usar as classes do CSS Module
   if (loading) {
-    return <div style={styles.loading}>Carregando dashboard...</div>;
+    return <div className={dashStyles.loading}>Carregando dashboard...</div>;
   }
 
+  // 7. Atualiza o layout de Erro
   if (error) {
      return (
-      <div style={styles.dashboardLayout}>
-          <div style={{ ...styles.sidebar, width: '80px', padding: '1rem 0' }}>
-               <button onClick={onLogout} style={{...styles.logoutButtonWithIcon, marginTop: 'auto', marginBottom: '1rem', width: '40px', height: '40px' }} title="Sair">
-                 <img src={logoutIcon} alt="Sair" style={styles.logoutIcon} className="theme-icon-invert"/>
+      <div className={dashStyles.dashboardLayout}>
+          {/* O Sidebar.js ainda não foi refatorado, então passamos styles vazios por enquanto */}
+          <div style={{ width: '80px', padding: '1rem 0', backgroundColor: 'var(--bg-color-alt)', boxShadow: '4px 0 15px var(--shadow-color)', position: 'fixed', height: '100%', top: 0, left: 0, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+               <button onClick={onLogout} style={{marginTop: 'auto', marginBottom: '1rem', width: '40px', height: '40px', border: '1px solid var(--error-color)', borderRadius: '8px', padding: '0.5rem', cursor: 'pointer', backgroundColor: 'transparent' }} title="Sair">
+                 <img src={logoutIcon} alt="Sair" style={{width: '24px', height: '24px'}} className="theme-icon-invert"/>
               </button>
           </div>
-          <div style={{ ...styles.mainContent, paddingLeft: '100px' }}>
-             <h2 id="top" style={styles.title} ref={el => sectionRefs.current['top'] = el}>Erro ao Carregar</h2>
-             <p style={styles.errorMessage}>{error}</p>
-             <button onClick={onLogout} style={{...styles.logoutButton, backgroundColor: 'var(--primary-color)', marginTop: '1rem', width: 'auto', alignSelf: 'center'}}>Voltar para Login</button>
+          <div className={dashStyles.mainContent} style={{ paddingLeft: '100px' }}>
+             <h2 id="top" className={dashStyles.title} ref={el => sectionRefs.current['top'] = el}>Erro ao Carregar</h2>
+             <p className={commonStyles.errorMessage}>{error}</p>
+             <button onClick={onLogout} className={commonStyles.simpleActionButton} style={{backgroundColor: 'var(--primary-color)', marginTop: '1rem', width: 'auto', alignSelf: 'center'}}>Voltar para Login</button>
           </div>
       </div>
     );
   }
 
+  // 8. Calcula o padding-left dinâmico
+  const mainContentPadding = isMobile ? '1rem' : (isSidebarOpen ? '300px' : '100px');
+
   return (
-    <div style={styles.dashboardLayout}>
+    <div className={dashStyles.dashboardLayout}>
       
+      {/* 9. Adiciona o Backdrop para mobile */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          className={`${dashStyles.mobileBackdrop} ${isSidebarOpen ? dashStyles.mobileBackdropVisible : ''}`}
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
@@ -152,50 +191,57 @@ const Dashboard = ({ user, onLogout }) => {
         handleNavLinkClick={handleNavLinkClick}
         onLogout={onLogout}
         logoutIcon={logoutIcon}
-        styles={styles}
+        // 10. Passa a prop isMobile
+        isMobile={isMobile}
       />
 
-      <div ref={mainContentRef} style={{ ...styles.mainContent, paddingLeft: isSidebarOpen ? '300px' : '100px' }}>
-        <h2 id="top" style={styles.title} ref={el => sectionRefs.current['top'] = el}>Dashboard</h2>
+      <div 
+        ref={mainContentRef} 
+        className={dashStyles.mainContent} 
+        // 11. Aplica o padding dinâmico
+        style={{ paddingLeft: mainContentPadding }}
+      >
+        <h2 id="top" className={dashStyles.title} ref={el => sectionRefs.current['top'] = el}>Dashboard</h2>
 
+        {/* 12. Passa commonStyles para os filhos em vez de 'styles' */}
         {user.role === 'ALUNO' && (
           <AlunoDashboard
-            styles={styles}
+            commonStyles={commonStyles}
             icons={icons}
             sectionRefs={sectionRefs}
             user={user}
             dataProps={dataProps}
             formProps={formProps}
             actionProps={actionProps}
-            uiState={alunoUiState} // Estado de UI específico
+            uiState={alunoUiState}
             loading={loading}
           />
         )}
         
         {user.role === 'PROFESSOR' && (
           <ProfessorDashboard
-            styles={styles}
+            commonStyles={commonStyles}
             icons={icons}
             sectionRefs={sectionRefs}
             user={user}
             dataProps={dataProps}
             actionProps={actionProps}
-            uiState={profUiState} // Estado de UI específico
-            formProps={formProps} // <- PROP ADICIONADA
-            loading={loading}     // <- PROP ADICIONADA
+            uiState={profUiState}
+            formProps={formProps}
+            loading={loading}
           />
         )}
         
         {user.role === 'ADMIN' && (
           <AdminDashboard
-            styles={styles}
+            commonStyles={commonStyles}
             icons={icons}
             sectionRefs={sectionRefs}
             user={user}
             dataProps={dataProps}
             actionProps={actionProps}
             adminProps={adminProps}
-            uiState={adminUiState} // Estado de UI específico
+            uiState={adminUiState}
             theme={theme}
           />
         )}

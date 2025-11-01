@@ -1,10 +1,10 @@
 // smartlab-frontend/src/components/dashboard/AlunoDashboard.js
 import React from 'react';
 import BookingList from '../ui/BookingList';
-import NewBookingForm from '../forms/NewBookingForm'; // <- 1. IMPORTAR O NOVO FORMULÁRIO
+import NewBookingForm from '../forms/NewBookingForm';
 
 const AlunoDashboard = ({
-  styles,
+  commonStyles, 
   icons,
   sectionRefs,
   user,
@@ -15,38 +15,39 @@ const AlunoDashboard = ({
   loading
 }) => {
   
+  // 1. ADICIONE ESTA LINHA PARA CORRIGIR O ERRO
+  const { collapseIcon, expandIcon } = icons;
+
   const { stats, myBookings, upcomingBookings } = dataProps;
   const { handleCancelBooking } = actionProps;
   const {
     showMyBookingsSection, setShowMyBookingsSection,
     showUpcomingBookingsSection, setShowUpcomingBookingsSection,
-    showNewBookingSection, setShowNewBookingSection // Pega o estado do Dashboard.js
+    showNewBookingSection, setShowNewBookingSection
   } = uiState;
-  const { collapseIcon, expandIcon } = icons;
 
   return (
     <>
       {stats && (
-        <div style={styles.cardContainer}>
-          <div style={styles.card}>
+        <div className={commonStyles.cardContainer}>
+          <div className={commonStyles.card}>
             <h3>Agendamentos Aprovados</h3>
-            <p style={styles.statNumber}>{stats.approvedBookings}</p>
+            <p className={commonStyles.statNumber}>{stats.approvedBookings}</p>
           </div>
-          <div style={styles.card}>
+          <div className={commonStyles.card}>
             <h3>Agendamentos Pendentes</h3>
-            <p style={styles.statNumber}>{stats.pendingBookings}</p>
+            <p className={commonStyles.statNumber}>{stats.pendingBookings}</p>
           </div>
-          <div style={styles.card}>
+          <div className={commonStyles.card}>
             <h3>Total de Laboratórios</h3>
-            <p style={styles.statNumber}>{stats.totalLaboratories}</p>
+            <p className={commonStyles.statNumber}>{stats.totalLaboratories}</p>
           </div>
         </div>
       )}
 
-      {/* 2. SUBSTITUIR O BLOCO DO FORMULÁRIO ANTIGO */}
       <NewBookingForm
         user={user}
-        styles={styles}
+        commonStyles={commonStyles}
         icons={icons}
         sectionRefs={sectionRefs}
         dataProps={dataProps}
@@ -64,10 +65,9 @@ const AlunoDashboard = ({
         onToggleExpand={() => setShowMyBookingsSection(!showMyBookingsSection)}
         sectionRef={el => sectionRefs.current['meus-agendamentos'] = el}
         user={user}
-        styles={styles}
         handleCancelBooking={handleCancelBooking}
-        collapseIcon={collapseIcon}
-        expandIcon={expandIcon}
+        collapseIcon={collapseIcon} // Agora 'collapseIcon' está definido
+        expandIcon={expandIcon}     // Agora 'expandIcon' está definido
       />
       <BookingList
         id="proximos-agendamentos"
@@ -77,9 +77,8 @@ const AlunoDashboard = ({
         onToggleExpand={() => setShowUpcomingBookingsSection(!showUpcomingBookingsSection)}
         sectionRef={el => sectionRefs.current['proximos-agendamentos'] = el}
         user={user}
-        styles={styles}
-        collapseIcon={collapseIcon}
-        expandIcon={expandIcon}
+        collapseIcon={collapseIcon} // Agora 'collapseIcon' está definido
+        expandIcon={expandIcon}     // Agora 'expandIcon' está definido
       />
     </>
   );

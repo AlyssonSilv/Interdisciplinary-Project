@@ -1,18 +1,18 @@
 // smartlab-frontend/src/components/dashboard/ProfessorDashboard.js
-import React, { useState } from 'react'; // <- 1. IMPORTAR useState
+import React, { useState } from 'react';
 import BookingList from '../ui/BookingList';
-import NewBookingForm from '../forms/NewBookingForm'; // <- 2. IMPORTAR O NOVO FORMULÁRIO
+import NewBookingForm from '../forms/NewBookingForm';
 
 const ProfessorDashboard = ({
-  styles,
+  commonStyles, // 1. Recebe 'commonStyles' em vez de 'styles'
   icons,
   sectionRefs,
   user,
   dataProps,
-  formProps, // <- 3. RECEBER PROPS DO FORMULÁRIO
+  formProps,
   actionProps,
   uiState,
-  loading // <- 3. RECEBER PROPS DO FORMULÁRIO
+  loading
 }) => {
   
   const { stats, pendingBookings, myBookings, upcomingBookings } = dataProps;
@@ -24,32 +24,32 @@ const ProfessorDashboard = ({
   } = uiState;
   const { collapseIcon, expandIcon } = icons;
 
-  // 4. ADICIONAR ESTADO LOCAL PARA O FORMULÁRIO
   const [showNewBookingSection, setShowNewBookingSection] = useState(true);
 
   return (
     <>
       {stats && (
-        <div style={styles.cardContainer}>
-          <div style={styles.card}>
+        // 2. Usar className
+        <div className={commonStyles.cardContainer}>
+          <div className={commonStyles.card}>
             <h3>Total de Agendamentos</h3>
-            <p style={styles.statNumber}>{stats.totalBookings}</p>
+            <p className={commonStyles.statNumber}>{stats.totalBookings}</p>
           </div>
-          <div style={styles.card}>
+          <div className={commonStyles.card}>
             <h3>Agendamentos Pendentes</h3>
-            <p style={styles.statNumber}>{stats.pendingBookings}</p>
+            <p className={commonStyles.statNumber}>{stats.pendingBookings}</p>
           </div>
-          <div style={styles.card}>
+          <div className={commonStyles.card}>
             <h3>Agendamentos Aprovados</h3>
-            <p style={styles.statNumber}>{stats.approvedBookings}</p>
+            <p className={commonStyles.statNumber}>{stats.approvedBookings}</p>
           </div>
         </div>
       )}
 
-      {/* 5. ADICIONAR O COMPONENTE DE FORMULÁRIO */}
+      {/* 3. Passar 'commonStyles' para os filhos */}
       <NewBookingForm
         user={user}
-        styles={styles}
+        commonStyles={commonStyles}
         icons={icons}
         sectionRefs={sectionRefs}
         dataProps={dataProps}
@@ -67,7 +67,6 @@ const ProfessorDashboard = ({
         onToggleExpand={() => setShowPendingBookingsSection(!showPendingBookingsSection)}
         sectionRef={el => sectionRefs.current['pendentes'] = el}
         user={user}
-        styles={styles}
         handleApproveRejectBooking={handleApproveRejectBooking}
         collapseIcon={collapseIcon}
         expandIcon={expandIcon}
@@ -81,7 +80,6 @@ const ProfessorDashboard = ({
         onToggleExpand={() => setShowMyBookingsSection(!showMyBookingsSection)}
         sectionRef={el => sectionRefs.current['meus-agendamentos'] = el}
         user={user}
-        styles={styles}
         handleCancelBooking={handleCancelBooking}
         collapseIcon={collapseIcon}
         expandIcon={expandIcon}
@@ -94,7 +92,6 @@ const ProfessorDashboard = ({
         onToggleExpand={() => setShowUpcomingBookingsSection(!showUpcomingBookingsSection)}
         sectionRef={el => sectionRefs.current['proximos-agendamentos'] = el}
         user={user}
-        styles={styles}
         collapseIcon={collapseIcon}
         expandIcon={expandIcon}
       />

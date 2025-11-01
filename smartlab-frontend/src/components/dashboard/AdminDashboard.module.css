@@ -1,0 +1,32 @@
+/* smartlab-frontend/src/components/dashboard/AdminDashboard.module.css */
+
+.managementSection {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--text-color-muted);
+}
+
+.chartsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 1.2rem;
+}
+
+.chartWrapper {
+  padding: 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--bg-color-alt);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .chartsContainer {
+    grid-template-columns: 1fr; /* Coluna única em telas menores */
+  }
+  .chartWrapper {
+    padding: 0.8rem;
+  }
+}

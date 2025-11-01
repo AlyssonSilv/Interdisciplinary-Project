@@ -1,0 +1,73 @@
+/* smartlab-frontend/src/Dashboard.module.css */
+
+.dashboardLayout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
+  box-sizing: border-box;
+  position: relative; /* Para a sidebar móvel */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  /* O padding-left será controlado dinamicamente via style prop */
+  transition: padding-left 0.5s ease-in-out;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  text-shadow: 0 0 12px var(--shadow-color-light);
+  text-align: center;
+}
+
+.loading {
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+}
+
+/* --- Responsividade --- */
+
+/* Backdrop para a sidebar em modo overlay */
+.mobileBackdrop {
+  display: none; /* Oculto por padrão */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1999; /* Abaixo da sidebar */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobileBackdropVisible {
+  display: block;
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1rem; /* Menor padding em telas pequenas */
+    /* O padding-left dinâmico será removido no Dashboard.js */
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}

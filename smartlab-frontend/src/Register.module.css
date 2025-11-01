@@ -1,0 +1,177 @@
+/* smartlab-frontend/src/Register.module.css */
+/* Estilos extraídos do seu Register.js e conectados ao seu index.css */
+
+/* 1. Definimos a animação de "flutuar" */
+@keyframes subtleFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.container {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color); /* Conectado ao tema */
+  color: var(--text-color); /* Conectado ao tema */
+  padding: 2rem;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 2. Atualizamos a classe .logo com os novos efeitos */
+.logo {
+  width: 120px; /* Um pouco maior para mais destaque */
+  height: 120px;
+  margin-bottom: 1rem;
+  object-fit: contain;
+  
+  /* Efeito de brilho que usa a cor do tema */
+  filter: drop-shadow(0 4px 12px var(--shadow-color-light));
+  
+  /* Aplicando a animação */
+  animation: subtleFloat 5s ease-in-out infinite;
+
+  /* Transição suave para o hover */
+  transition: transform 0.3s ease;
+}
+
+/* 3. Adicionamos um efeito de hover */
+.logo:hover {
+  transform: scale(1.05); /* Aumenta levemente ao passar o mouse */
+  animation-play-state: paused; /* Pausa a animação ao interagir */
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-color); /* Conectado ao tema */
+  text-shadow: 0 0 10px var(--shadow-color-light); /* Conectado ao tema */
+}
+
+.form {
+  background-color: var(--bg-color-alt); /* Conectado ao tema */
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--shadow-color); /* Conectado ao tema */
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--border-color); /* Conectado ao tema */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  color: var(--text-color-muted); /* Conectado ao tema */
+  font-size: 0.95rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color); /* Conectado ao tema */
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: var(--bg-color-alt); /* Conectado ao tema */
+  color: var(--text-color); /* Conectado ao tema */
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+  border-color: var(--primary-color); /* Conectado ao tema */
+  box-shadow: 0 0 10px var(--shadow-color-light); /* Conectado ao tema */
+  outline: none;
+}
+
+.button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color); /* Conectado ao tema */
+  color: var(--primary-text-color); /* Conectado ao tema */
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow-color-light); /* Conectado ao tema */
+}
+
+.button:disabled {
+  background-color: var(--text-color-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.successMessage {
+  color: var(--success-color); /* Conectado ao tema */
+  margin-top: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(39, 174, 96, 0.5);
+}
+
+.errorMessage {
+  color: var(--error-color); /* Conectado ao tema */
+  margin-top: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(235, 87, 87, 0.5);
+}
+
+.raErrorMessage {
+  color: var(--error-color); /* Conectado ao tema */
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-shadow: 0 0 5px rgba(235, 87, 87, 0.3);
+}
+
+.inferredRoleMessage {
+  color: var(--success-color); /* Conectado ao tema */
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-shadow: 0 0 5px rgba(39, 174, 96, 0.3);
+}
+
+.linkText {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-color-muted); /* Conectado ao tema */
+}
+
+.link {
+  color: var(--primary-color); /* Conectado ao tema */
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  opacity: 0.8;
+}

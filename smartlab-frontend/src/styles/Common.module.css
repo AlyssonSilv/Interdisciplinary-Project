@@ -1,0 +1,337 @@
+/* smartlab-frontend/src/styles/Common.module.css */
+/* Contém estilos reutilizáveis (cards, seções, botões, formulários) */
+
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+}
+
+.card {
+  background-color: var(--bg-color-alt);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px var(--shadow-color-light);
+}
+
+.statNumber {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: var(--success-color);
+  margin: 0.5rem 0 0;
+  text-shadow: 0 0 8px rgba(39, 174, 96, 0.4);
+}
+
+.section {
+  background-color: var(--bg-color-alt);
+  padding: 1.8rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2.5rem auto;
+  border: 1px solid var(--border-color);
+  scroll-margin-top: 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.6rem;
+  text-shadow: 0 0 8px var(--shadow-color-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subSectionTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-color);
+  text-shadow: 0 0 5px var(--shadow-color-light);
+  text-align: center;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.formContainer {
+  background-color: var(--form-container-bg);
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(47, 128, 237, 0.05);
+  margin-top: 1.2rem;
+  margin-bottom: 1.5rem;
+  border: 1px dashed var(--form-container-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: var(--text-color-muted);
+  font-size: 0.9rem;
+}
+
+.input {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-color-alt);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.input:focus,
+.input:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--shadow-color-light);
+}
+
+.textarea {
+  composes: input; /* Herda os estilos do .input */
+  height: 60px;
+  resize: vertical;
+  min-height: 40px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+/* --- Botões Base --- */
+.buttonBase {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.buttonBase:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px var(--shadow-color-light);
+}
+
+.buttonBase:disabled {
+  background-color: var(--text-color-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* --- Variantes de Botão --- */
+.submitButton {
+  composes: buttonBase;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  margin-top: 1.2rem;
+  background-color: var(--success-color);
+  color: var(--primary-text-color);
+}
+.submitButton:hover {
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.approveButton {
+  composes: buttonBase;
+  background-color: var(--success-color);
+  color: white;
+}
+.approveButton:hover {
+  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.4);
+}
+
+.rejectButton {
+  composes: buttonBase;
+  background-color: var(--error-color);
+  color: white;
+}
+.rejectButton:hover {
+  box-shadow: 0 4px 10px rgba(235, 87, 87, 0.4);
+}
+
+.cancelButton {
+  composes: buttonBase;
+  background-color: var(--cancel-color);
+  color: var(--warning-text-color);
+}
+.cancelButton:hover {
+  box-shadow: 0 4px 10px rgba(242, 201, 76, 0.4);
+}
+
+.deleteButton {
+  composes: buttonBase;
+  background-color: var(--error-color);
+  color: white;
+}
+.deleteButton:hover {
+  box-shadow: 0 4px 10px rgba(235, 87, 87, 0.4);
+}
+
+.editButton {
+  composes: buttonBase;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.viewPeripheralsButton {
+  composes: buttonBase;
+  background-color: #56CCF2; /* Cor específica */
+  color: #1F2933;
+}
+.viewPeripheralsButton:hover {
+  box-shadow: 0 4px 10px rgba(86, 204, 242, 0.4);
+}
+
+.simpleActionButton {
+  composes: buttonBase;
+  padding: 0.7rem 1.3rem;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  font-size: 0.95em;
+  margin-top: 0.8rem;
+}
+
+.createButton {
+  composes: buttonBase;
+  padding: 0.7rem 1.3rem;
+  background-color: var(--success-color);
+  color: white;
+  font-size: 0.95em;
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+.createButton:hover {
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.backButton {
+  composes: buttonBase;
+  padding: 0.5rem 0.9rem;
+  background-color: #9B51E0; /* Cor específica */
+  color: white;
+  font-size: 0.85em;
+  margin: 0.8rem 0;
+}
+.backButton:hover {
+   box-shadow: 0 4px 10px rgba(155, 81, 224, 0.4);
+}
+
+.toggleFormButton {
+  composes: buttonBase;
+  padding: 0.7rem 1.3rem;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  font-size: 0.95em;
+  margin-bottom: 1.2rem;
+}
+
+.toggleSectionButton {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color-muted);
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggleSectionButton:hover {
+  transform: scale(1.1);
+  background-color: var(--form-container-bg);
+}
+
+.toggleIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Mensagens --- */
+.successMessage, .errorMessage, .warningMessage, .noDataText {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 0.9em;
+}
+
+.successMessage {
+  color: var(--success-color);
+  text-shadow: 0 0 8px rgba(39, 174, 96, 0.5);
+}
+.errorMessage {
+  color: var(--error-color);
+  text-shadow: 0 0 8px rgba(235, 87, 87, 0.5);
+}
+.warningMessage {
+  color: var(--warning-color);
+  text-shadow: 0 0 5px rgba(242, 153, 74, 0.3);
+}
+.noDataText {
+  color: var(--text-color-muted);
+  font-style: italic;
+  font-weight: normal;
+}
+
+/* --- Responsividade (Media Queries) --- */
+@media (max-width: 768px) {
+  .section {
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .sectionTitle {
+    font-size: 1.4rem;
+  }
+  .cardContainer {
+    grid-template-columns: 1fr; /* Coluna única em telas menores */
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    padding: 1.2rem;
+  }
+}

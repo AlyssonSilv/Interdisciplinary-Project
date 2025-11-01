@@ -1,0 +1,212 @@
+/* smartlab-frontend/src/components/layout/Sidebar.module.css */
+
+.sidebar {
+  background-color: var(--bg-color-alt);
+  padding: 1rem 0;
+  box-shadow: 4px 0 15px var(--shadow-color);
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: width 0.5s ease-in-out, background-color 0.3s ease;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sidebarToggleButton {
+  position: absolute;
+  top: 1rem;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 10px var(--shadow-color);
+  transition: background-color 0.3s ease, left 0.5s ease-in-out, right 0.5s ease-in-out, transform 0.2s ease;
+  z-index: 1001; /* Acima da sidebar */
+}
+
+.sidebarToggleButton:hover {
+  transform: scale(1.1);
+}
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+  flex-grow: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out 0.2s;
+  box-sizing: border-box;
+  overflow-y: auto;
+  margin-top: 3rem;
+}
+
+.sidebarTitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--shadow-color-light);
+}
+
+.sidebarUserInfo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.sidebarDetail {
+  font-size: 0.85rem;
+  color: var(--text-color-muted);
+  margin-bottom: 0.4rem;
+  text-align: center;
+  word-break: break-word;
+  width: 100%;
+}
+
+.roleHighlight {
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow: 0 0 5px var(--shadow-color-light);
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  align-items: stretch;
+}
+
+.navLink {
+  color: var(--text-color-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1em;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.navLink:hover {
+  background-color: var(--form-container-bg);
+  color: var(--text-color);
+}
+
+.navLinkActive {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  font-weight: bold;
+  box-shadow: 0 0 10px var(--shadow-color-light);
+  transform: scale(1.05);
+}
+.navLinkActive:hover {
+  background-color: var(--primary-color); /* Manter a cor no hover */
+  color: var(--primary-text-color);
+  transform: scale(1.05);
+}
+
+.themeToggleButton {
+  padding: 0.7rem 1.3rem;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.themeToggleButton:hover {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  transform: scale(1.02);
+}
+
+.themeToggleButtonClosed {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  margin-top: auto;
+}
+
+.logoutButtonWithIcon {
+  background-color: transparent;
+  border: 1px solid var(--error-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+  align-self: center;
+  width: auto;
+}
+
+.logoutButtonWithIcon:hover {
+  background-color: var(--error-color);
+  transform: scale(1.05);
+}
+/* No hover, o ícone precisa ser invertido se a classe theme-icon-invert estiver presente */
+.logoutButtonWithIcon:hover .themeIconInvert {
+  filter: invert(1) brightness(100); /* Força o ícone a ficar branco */
+}
+
+
+.logoutIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .sidebar {
+    /* Em telas pequenas, a sidebar fica fora da tela por padrão */
+    width: 280px; /* Largura total quando aberta */
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in-out;
+    z-index: 2000; /* Fica acima de tudo */
+  }
+
+  /* Classe 'open' que será controlada pelo React */
+  .sidebarOpen {
+    transform: translateX(0);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.4);
+  }
+
+  .sidebarToggleButton {
+    /* O botão fica fixo no canto */
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2001; /* Acima do backdrop e da sidebar */
+  }
+}

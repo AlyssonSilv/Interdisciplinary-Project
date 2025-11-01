@@ -1,10 +1,11 @@
 // smartlab-frontend/src/components/forms/NewBookingForm.js
 import React from 'react';
+import commonStyles from '../../styles/Common.module.css'; // 1. Importar comuns
+import styles from './NewBookingForm.module.css'; // 2. Importar locais
 
-// Este componente recebe todas as props de formulário
 const NewBookingForm = ({
   user,
-  styles,
+  commonStyles, // 3. Recebe commonStyles
   icons,
   sectionRefs,
   dataProps,
@@ -28,28 +29,28 @@ const NewBookingForm = ({
     isSlotsLoading,
     isPeripheralsLoading,
     isSubmitting,
-    isRecurring, // <- Prop de recorrência
-    setIsRecurring, // <- Prop de recorrência
-    numWeeks, // <- Prop de recorrência
-    setNumWeeks // <- Prop de recorrência
+    isRecurring,
+    setIsRecurring,
+    numWeeks,
+    setNumWeeks
   } = formProps;
 
   const { showNewBookingSection, setShowNewBookingSection } = uiStateProps;
   const { collapseIcon, expandIcon } = icons;
 
   return (
-    <div id="novo-agendamento" style={styles.section} ref={el => sectionRefs.current['novo-agendamento'] = el}>
-      <h3 style={styles.sectionTitle}>
+    // 4. Usar 'className'
+    <div id="novo-agendamento" className={commonStyles.section} ref={el => sectionRefs.current['novo-agendamento'] = el}>
+      <h3 className={commonStyles.sectionTitle}>
         Novo Agendamento
         <button
           onClick={() => setShowNewBookingSection(!showNewBookingSection)}
-          style={styles.toggleSectionButton}
+          className={commonStyles.toggleSectionButton}
         >
            <img 
               src={showNewBookingSection ? collapseIcon : expandIcon} 
               alt={showNewBookingSection ? 'Minimizar' : 'Expandir'} 
-              style={styles.toggleIcon}
-              className="theme-icon-invert"
+              className={`${commonStyles.toggleIcon} theme-icon-invert`}
             />
         </button>
       </h3>
@@ -57,15 +58,15 @@ const NewBookingForm = ({
       {showNewBookingSection && (
         <div style={{ paddingTop: '1rem' }}>
           <>
-            <button onClick={() => setShowBookingForm(!showBookingForm)} style={styles.toggleFormButton}>
+            <button onClick={() => setShowBookingForm(!showBookingForm)} className={commonStyles.toggleFormButton}>
               {showBookingForm ? 'Ocultar Formulário' : 'Fazer um Novo Agendamento'}
             </button>
 
             {showBookingForm && (
-              <form onSubmit={handleCreateBooking} style={styles.form}>
-                <div style={styles.formGroup}>
-                  <label htmlFor="lab" style={styles.label}>Laboratório:</label>
-                  <select id="lab" value={newBookingLabId} onChange={(e) => setNewBookingLabId(e.target.value)} required style={styles.input} >
+              <form onSubmit={handleCreateBooking} className={commonStyles.form}>
+                <div className={commonStyles.formGroup}>
+                  <label htmlFor="lab" className={commonStyles.label}>Laboratório:</label>
+                  <select id="lab" value={newBookingLabId} onChange={(e) => setNewBookingLabId(e.target.value)} required className={commonStyles.input} >
                     <option value="" disabled>Selecione um laboratório</option>
                     {Array.isArray(availableLaboratories) && availableLaboratories.map((lab) => (
                       <option key={lab.id} value={lab.id}> {lab.name} (Capacidade: {lab.capacity}, Local: {lab.location}) </option>
@@ -73,27 +74,27 @@ const NewBookingForm = ({
                   </select>
                 </div>
                 
-                <div style={styles.formGroup}>
-                  <label htmlFor="bookingDate" style={styles.label}>Data do Agendamento:</label>
-                  <input type="date" id="bookingDate" value={newBookingDate} onChange={(e) => setNewBookingDate(e.target.value)} required style={styles.input} min={new Date().toISOString().slice(0, 10)} />
+                <div className={commonStyles.formGroup}>
+                  <label htmlFor="bookingDate" className={commonStyles.label}>Data do Agendamento:</label>
+                  <input type="date" id="bookingDate" value={newBookingDate} onChange={(e) => setNewBookingDate(e.target.value)} required className={commonStyles.input} min={new Date().toISOString().slice(0, 10)} />
                 </div>
 
                 {isSlotsLoading && (
-                  <p style={styles.noDataText}>Buscando horários disponíveis...</p>
+                  <p className={commonStyles.noDataText}>Buscando horários disponíveis...</p>
                 )}
                 
                 {!isSlotsLoading && newBookingLabId && newBookingDate && availableTimeSlots.length === 0 && !loading && (
-                  <p style={styles.warningMessage}>Nenhum horário disponível para esta data/laboratório.</p>
+                  <p className={commonStyles.warningMessage}>Nenhum horário disponível para esta data/laboratório.</p>
                 )}
                 
-                <div style={styles.formGroup}>
-                  <label htmlFor="timeSlot" style={styles.label}>Horário Disponível:</label>
+                <div className={commonStyles.formGroup}>
+                  <label htmlFor="timeSlot" className={commonStyles.label}>Horário Disponível:</label>
                   <select
                     id="timeSlot"
                     value={selectedTimeSlot}
                     onChange={(e) => setSelectedTimeSlot(e.target.value)}
                     required
-                    style={styles.input}
+                    className={commonStyles.input}
                     disabled={availableTimeSlots.length === 0 || isSlotsLoading}
                   >
                     <option value="">Selecione um horário</option>
@@ -104,15 +105,15 @@ const NewBookingForm = ({
                 </div>
 
                 {newBookingLabId && isPeripheralsLoading && (
-                   <p style={styles.noDataText}>Buscando periféricos...</p>
+                   <p className={commonStyles.noDataText}>Buscando periféricos...</p>
                 )}
 
                 {newBookingLabId && !isPeripheralsLoading && availablePeripherals.length > 0 && (
-                  <div style={styles.section}>
-                    <h4 style={styles.subSectionTitle}>Periféricos Desejados:</h4>
-                    <div style={styles.peripheralsGrid}>
+                  <div className={commonStyles.section} style={{padding: '0.8rem'}}> {/* Estilo inline para padding menor */}
+                    <h4 className={commonStyles.subSectionTitle}>Periféricos Desejados:</h4>
+                    <div className={styles.peripheralsGrid}>
                       {availablePeripherals.map(peripheral => (
-                        <div key={peripheral.id} style={styles.peripheralItem}>
+                        <div key={peripheral.id} className={styles.peripheralItem}>
                           <label htmlFor={`peripheral-${peripheral.id}`}>
                             {peripheral.name} (Disp: {peripheral.quantity})
                           </label>
@@ -123,7 +124,7 @@ const NewBookingForm = ({
                             max={peripheral.quantity}
                             value={selectedPeripherals[peripheral.id] || 0}
                             onChange={(e) => handlePeripheralQuantityChange(peripheral.id, e.target.value)}
-                            style={styles.peripheralInput}
+                            className={styles.peripheralInput}
                           />
                         </div>
                       ))}
@@ -131,47 +132,44 @@ const NewBookingForm = ({
                   </div>
                 )}
 
-                <div style={styles.formGroup}>
-                  <label htmlFor="purpose" style={styles.label}>Finalidade:</label>
-                  <textarea id="purpose" value={newBookingPurpose} onChange={(e) => setNewBookingPurpose(e.target.value)} required style={{ ...styles.input, height: '80px' }} />
+                <div className={commonStyles.formGroup}>
+                  <label htmlFor="purpose" className={commonStyles.label}>Finalidade:</label>
+                  <textarea id="purpose" value={newBookingPurpose} onChange={(e) => setNewBookingPurpose(e.target.value)} required className={commonStyles.textarea} style={{height: '80px'}} />
                 </div>
                 
-                {/* --- INÍCIO DA FUNCIONALIDADE RECORRENTE --- */}
-                {/* Só mostra para Professores e Admins */}
                 {(user.role === 'PROFESSOR' || user.role === 'ADMIN') && (
-                  <div style={{border: '1px dashed var(--form-container-border)', borderRadius: '8px', padding: '1rem', marginTop: '1rem', backgroundColor: 'var(--bg-color)'}}>
-                    <div style={{...styles.formGroup, marginBottom: isRecurring ? '1rem' : '0', userSelect: 'none'}}>
-                      <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontWeight: 500 }}>
+                  <div className={styles.recurringSection}>
+                    <div className={commonStyles.formGroup} style={{marginBottom: isRecurring ? '1rem' : '0'}}>
+                      <label className={styles.recurringCheckboxLabel}>
                         <input
                           type="checkbox"
                           checked={isRecurring}
                           onChange={(e) => setIsRecurring(e.target.checked)}
-                          style={{ marginRight: '10px', width: '18px', height: '18px', cursor: 'pointer' }}
+                          className={styles.recurringCheckbox}
                         />
                         Agendamento Recorrente (Semanal)
                       </label>
                     </div>
                     {isRecurring && (
-                      <div style={styles.formGroup}>
-                        <label htmlFor="numWeeks" style={styles.label}>Repetir pelas próximas (Nº de semanas):</label>
+                      <div className={commonStyles.formGroup} style={{marginBottom: 0}}>
+                        <label htmlFor="numWeeks" className={commonStyles.label}>Repetir pelas próximas (Nº de semanas):</label>
                         <input
                           type="number"
                           id="numWeeks"
                           value={numWeeks}
                           onChange={(e) => setNumWeeks(parseInt(e.target.value, 10) || 1)}
                           min="1"
-                          max="20" // Limite semestral
-                          style={styles.input}
+                          max="20"
+                          className={commonStyles.input}
                         />
                       </div>
                     )}
                   </div>
                 )}
-                {/* --- FIM DA FUNCIONALIDADE RECORRENTE --- */}
 
                 <button 
                   type="submit" 
-                  style={styles.submitButton} 
+                  className={commonStyles.submitButton}
                   disabled={!newBookingLabId || !newBookingDate || !selectedTimeSlot || isSubmitting}
                 >
                   {isSubmitting ? 'Agendando...' : 'Agendar Laboratório'}

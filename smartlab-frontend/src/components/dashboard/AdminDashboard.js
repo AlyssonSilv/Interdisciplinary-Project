@@ -4,10 +4,12 @@ import { Bar, Line } from 'react-chartjs-2';
 import BookingList from '../ui/BookingList';
 import LaboratoryForm from '../forms/LaboratoryForm';
 import PeripheralForm from '../forms/PeripheralForm';
-import EmptyState from '../ui/EmptyState'; // <- 1. IMPORTAR
+import EmptyState from '../ui/EmptyState';
+import commonStyles from '../../styles/Common.module.css';
+import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = ({
-  styles,
+  commonStyles,
   icons,
   sectionRefs,
   user,
@@ -18,7 +20,6 @@ const AdminDashboard = ({
   theme
 }) => {
 
-  // ... (desestruturação de props inalterada) ...
   const {
     stats,
     analyticsData,
@@ -53,7 +54,6 @@ const AdminDashboard = ({
   const { collapseIcon, expandIcon } = icons;
 
 
-  // ... (lógica de gráficos e chartColors inalterada) ...
   const { bookingsOverTimeData, labPopularityData } = useMemo(() => {
     let bookingsOverTimeData = null;
     if (analyticsData?.bookingsOverTime) {
@@ -82,34 +82,98 @@ const AdminDashboard = ({
     }
     return { bookingsOverTimeData, labPopularityData };
   }, [analyticsData]);
+
+  // ***** INÍCIO DA CORREÇÃO *****
+  // Removemos 'getComputedStyle' e usamos o 'theme' prop diretamente.
   const chartColors = useMemo(() => {
-    const styles = getComputedStyle(document.body);
+    if (theme === 'dark') {
+      return {
+        textColor: '#E5E7EB', // Cor do texto no modo escuro (de index.css)
+        gridColor: '#374151', // Cor da grade no modo escuro (de index.css)
+      };
+    }
+    
+    // Padrão para o modo claro
     return {
-      textColor: styles.getPropertyValue('--chart-text-color').trim() || (theme === 'dark' ? '#E5E7EB' : '#1F2933'),
-      gridColor: styles.getPropertyValue('--chart-grid-color').trim() || (theme === 'dark' ? '#374151' : 'rgba(0,0,0,0.05)'),
+      textColor: '#1F2933', // Cor do texto no modo claro (de index.css)
+      gridColor: 'rgba(0, 0, 0, 0.05)', // Cor da grade no modo claro (de index.css)
     };
-  }, [theme]);
+  }, [theme]); // Depende apenas do 'theme' prop
+  // ***** FIM DA CORREÇÃO *****
 
 
   return (
     <>
-      {/* ... (Stats e Área Analítica inalterados) ... */}
-      {stats && ( <div style={styles.cardContainer}> <div style={styles.card}> <h3>Total de Usuários Ativos</h3> <p style={styles.statNumber}>{stats.totalUsers}</p> </div> <div style={styles.card}> <h3>Total de Laboratórios Ativos</h3> <p style={styles.statNumber}>{stats.totalLaboratories}</p> </div> <div style={styles.card}> <h3>Total de Periféricos Ativos</h3> <p style={styles.statNumber}>{stats.totalPeripherals}</p> </div> <div style={styles.card}> <h3>Total de Agendamentos</h3> <p style={styles.statNumber}>{stats.totalBookings}</p> </div> </div> )}
-      <div id="analise" style={styles.section} ref={el => sectionRefs.current['analise'] = el}> <h3 style={styles.sectionTitle}> Área Analítica <button onClick={() => setShowAnalyticsSection(!showAnalyticsSection)} style={styles.toggleSectionButton} > <img src={showAnalyticsSection ? collapseIcon : expandIcon} alt={showAnalyticsSection ? 'Minimizar' : 'Expandir'} style={styles.toggleIcon} className="theme-icon-invert" /> </button> </h3> {showAnalyticsSection && ( <div style={{ paddingTop: '1rem' }}> {analyticsError ? ( <p style={styles.errorMessage}>{analyticsError}</p> ) : analyticsData && bookingsOverTimeData && labPopularityData ? ( <div style={styles.chartsContainer}> <div style={styles.chartWrapper}> <h4 style={styles.subSectionTitle}>Agendamentos nos Últimos 7 Dias</h4> <Line options={{ responsive: true, plugins: { legend: { position: 'top', labels: { color: chartColors.textColor } }, title: { display: true, text: 'Tendência de Agendamentos', color: chartColors.textColor }, }, scales: { y: { beginAtZero: true, grid: { color: chartColors.gridColor }, ticks: { color: chartColors.textColor } }, x: { grid: { display: false, }, ticks: { color: chartColors.textColor } } } }} data={bookingsOverTimeData} /> </div> <div style={styles.chartWrapper}> <h4 style={styles.subSectionTitle}>Popularidade dos Laboratórios (Últimos 30 dias)</h4> <Bar options={{ responsive: true, indexAxis: 'y', plugins: { legend: { display: false }, title: { display: true, text: 'Nº de Agendamentos por Laboratório', color: chartColors.textColor }, }, scales: { x: { beginAtZero: true, grid: { color: chartColors.gridColor }, ticks: { color: chartColors.textColor } }, y: { grid: { display: false, }, ticks: { color: chartColors.textColor } } } }} data={labPopularityData} /> </div> </div> ) : ( <p style={styles.noDataText}>Carregando dados analíticos...</p> )} </div> )} </div>
+      {stats && ( <div className={commonStyles.cardContainer}> <div className={commonStyles.card}> <h3>Total de Usuários Ativos</h3> <p className={commonStyles.statNumber}>{stats.totalUsers}</p> </div> <div className={commonStyles.card}> <h3>Total de Laboratórios Ativos</h3> <p className={commonStyles.statNumber}>{stats.totalLaboratories}</p> </div> <div className={commonStyles.card}> <h3>Total de Periféricos Ativos</h3> <p className={commonStyles.statNumber}>{stats.totalPeripherals}</p> </div> <div className={commonStyles.card}> <h3>Total de Agendamentos</h3> <p className={commonStyles.statNumber}>{stats.totalBookings}</p> </div> </div> )}
+      <div id="analise" className={commonStyles.section} ref={el => sectionRefs.current['analise'] = el}> 
+        <h3 className={commonStyles.sectionTitle}> 
+          Área Analítica 
+          <button onClick={() => setShowAnalyticsSection(!showAnalyticsSection)} className={commonStyles.toggleSectionButton} > 
+            <img 
+              src={showAnalyticsSection ? collapseIcon : expandIcon} 
+              alt={showAnalyticsSection ? 'Minimizar' : 'Expandir'} 
+              className={`${commonStyles.toggleIcon} theme-icon-invert`}
+            /> 
+          </button> 
+        </h3> 
+        {showAnalyticsSection && ( 
+          <div style={{ paddingTop: '1rem' }}> 
+            {analyticsError ? ( <p className={commonStyles.errorMessage}>{analyticsError}</p> ) : analyticsData && bookingsOverTimeData && labPopularityData ? ( 
+              <div className={styles.chartsContainer}> 
+                <div className={styles.chartWrapper}> 
+                  <h4 className={commonStyles.subSectionTitle}>Agendamentos nos Últimos 7 Dias</h4> 
+                  <Line 
+                    options={{ 
+                      responsive: true, 
+                      plugins: { 
+                        legend: { position: 'top', labels: { color: chartColors.textColor } }, 
+                        title: { display: true, text: 'Tendência de Agendamentos', color: chartColors.textColor }, 
+                      }, 
+                      scales: { 
+                        y: { beginAtZero: true, grid: { color: chartColors.gridColor }, ticks: { color: chartColors.textColor } }, 
+                        x: { grid: { display: false, }, ticks: { color: chartColors.textColor } } 
+                      } 
+                    }} 
+                    data={bookingsOverTimeData} 
+                  /> 
+                </div> 
+                <div className={styles.chartWrapper}> 
+                  <h4 className={commonStyles.subSectionTitle}>Popularidade dos Laboratórios (Últimos 30 dias)</h4> 
+                  <Bar 
+                    options={{ 
+                      responsive: true, 
+                      indexAxis: 'y', 
+                      plugins: { 
+                        legend: { display: false }, 
+                        title: { display: true, text: 'Nº de Agendamentos por Laboratório', color: chartColors.textColor }, 
+                      }, 
+                      scales: { 
+                        x: { beginAtZero: true, grid: { color: chartColors.gridColor }, ticks: { color: chartColors.textColor } }, 
+                        y: { grid: { display: false, }, ticks: { color: chartColors.textColor } } 
+                      } 
+                    }} 
+                    data={labPopularityData} 
+                  /> 
+                </div> 
+              </div> 
+            ) : ( 
+              <p className={commonStyles.noDataText}>Carregando dados analíticos...</p> 
+            )} 
+          </div> 
+        )} 
+      </div>
 
-      {/* ... (BookingLists inalterados) ... */}
-      <BookingList id="pendentes" title="Agendamentos Pendentes de Aprovação" bookings={pendingBookings} showActions={true} isExpanded={showPendingBookingsSection} onToggleExpand={() => setShowPendingBookingsSection(!showPendingBookingsSection)} sectionRef={el => sectionRefs.current['pendentes'] = el} user={user} styles={styles} handleApproveRejectBooking={handleApproveRejectBooking} handleDeleteBooking={handleDeleteBooking} collapseIcon={collapseIcon} expandIcon={expandIcon} />
-      <BookingList id="todos-agendamentos" title="Todos os Agendamentos do Sistema" bookings={allBookings} showActions={true} forAdmin={true} isExpanded={showAllBookingsSection} onToggleExpand={() => setShowAllBookingsSection(!showAllBookingsSection)} sectionRef={el => sectionRefs.current['todos-agendamentos'] = el} user={user} styles={styles} handleApproveRejectBooking={handleApproveRejectBooking} handleDeleteBooking={handleDeleteBooking} collapseIcon={collapseIcon} expandIcon={expandIcon} />
-      <BookingList id="proximos-agendamentos" title="Próximos Agendamentos no Sistema" bookings={upcomingBookings} isExpanded={showUpcomingBookingsSection} onToggleExpand={() => setShowUpcomingBookingsSection(!showUpcomingBookingsSection)} sectionRef={el => sectionRefs.current['proximos-agendamentos'] = el} user={user} styles={styles} collapseIcon={collapseIcon} expandIcon={expandIcon} />
+      <BookingList id="pendentes" title="Agendamentos Pendentes de Aprovação" bookings={pendingBookings} showActions={true} isExpanded={showPendingBookingsSection} onToggleExpand={() => setShowPendingBookingsSection(!showPendingBookingsSection)} sectionRef={el => sectionRefs.current['pendentes'] = el} user={user} handleApproveRejectBooking={handleApproveRejectBooking} handleDeleteBooking={handleDeleteBooking} collapseIcon={collapseIcon} expandIcon={expandIcon} />
+      <BookingList id="todos-agendamentos" title="Todos os Agendamentos do Sistema" bookings={allBookings} showActions={true} forAdmin={true} isExpanded={showAllBookingsSection} onToggleExpand={() => setShowAllBookingsSection(!showAllBookingsSection)} sectionRef={el => sectionRefs.current['todos-agendamentos'] = el} user={user} handleApproveRejectBooking={handleApproveRejectBooking} handleDeleteBooking={handleDeleteBooking} collapseIcon={collapseIcon} expandIcon={expandIcon} />
+      <BookingList id="proximos-agendamentos" title="Próximos Agendamentos no Sistema" bookings={upcomingBookings} isExpanded={showUpcomingBookingsSection} onToggleExpand={() => setShowUpcomingBookingsSection(!showUpcomingBookingsSection)} sectionRef={el => sectionRefs.current['proximos-agendamentos'] = el} user={user} collapseIcon={collapseIcon} expandIcon={expandIcon} />
 
-      {/* Seção de Gerenciamento */}
-      <div id="gerenciamento" style={styles.section} ref={el => sectionRefs.current['gerenciamento'] = el}>
-          <h3 style={styles.sectionTitle}>
+      <div id="gerenciamento" className={commonStyles.section} ref={el => sectionRefs.current['gerenciamento'] = el}>
+          <h3 className={commonStyles.sectionTitle}>
               Gerenciamento de Laboratórios e Periféricos
           </h3>
-          <div style={styles.buttonGroup}>
+          <div className={commonStyles.buttonGroup}>
             <button
-              style={styles.simpleActionButton}
+              className={commonStyles.simpleActionButton}
               onClick={() => {
                 setShowManageLabs(!showManageLabs);
                 setShowManagePeripherals(false); 
@@ -122,7 +186,8 @@ const AdminDashboard = ({
               {showManageLabs ? 'Ocultar Gerenciamento de Labs' : 'Gerenciar Laboratórios'}
             </button>
             <button
-              style={{...styles.simpleActionButton, marginLeft: '1rem'}}
+              className={commonStyles.simpleActionButton}
+              style={{marginLeft: '1rem'}}
               onClick={() => {
                 setShowManagePeripherals(!showManagePeripherals);
                 setShowManageLabs(false); 
@@ -137,9 +202,9 @@ const AdminDashboard = ({
           </div>
 
           {showManageLabs && (
-            <div style={styles.managementSection}>
-              <h4 style={styles.subSectionTitle}>Laboratórios Cadastrados</h4>
-              <button onClick={() => {setShowLabForm(true); setCurrentLaboratory(null);}} style={styles.createButton}>
+            <div className={styles.managementSection}>
+              <h4 className={commonStyles.subSectionTitle}>Laboratórios Cadastrados</h4>
+              <button onClick={() => {setShowLabForm(true); setCurrentLaboratory(null);}} className={commonStyles.createButton}>
                 + Criar Novo Laboratório
               </button>
 
@@ -148,44 +213,43 @@ const AdminDashboard = ({
                   lab={currentLaboratory}
                   onSave={handleCreateOrUpdateLab}
                   onCancel={() => setShowLabForm(false)}
-                  styles={styles}
+                  commonStyles={commonStyles}
                 />
               )}
 
-              <ul style={styles.list}>
+              <ul className={commonStyles.list}>
                 {allLaboratories.length > 0 ? (
                   allLaboratories.map((lab) => (
-                    <li key={lab.id} style={styles.listItem}>
+                    <li key={lab.id} className={commonStyles.listItem}>
                       <strong>{lab.name}</strong> (ID: {lab.id})<br />
                       Descrição: {lab.description}<br />
                       Capacidade: {lab.capacity}<br />
                       Localização: {lab.location}<br />
                       Status: {lab.active ? <span style={{color: 'var(--success-color)'}}>Ativo</span> : <span style={{color: 'var(--error-color)'}}>Inativo</span>}
-                      <div style={styles.actionButtons}>
-                        <button onClick={() => {setShowLabForm(true); setCurrentLaboratory(lab);}} style={styles.editButton}>Editar</button>
-                        <button onClick={() => handleDeleteLab(lab.id)} style={styles.deleteButton}>Desativar</button>
-                        <button onClick={() => handleViewPeripherals(lab)} style={styles.viewPeripheralsButton}>Ver Periféricos</button>
+                      <div className={commonStyles.buttonGroup} style={{justifyContent: 'flex-end', marginTop: '0.8rem'}}>
+                        <button onClick={() => {setShowLabForm(true); setCurrentLaboratory(lab);}} className={commonStyles.editButton}>Editar</button>
+                        <button onClick={() => handleDeleteLab(lab.id)} className={commonStyles.deleteButton}>Desativar</button>
+                        <button onClick={() => handleViewPeripherals(lab)} className={commonStyles.viewPeripheralsButton}>Ver Periféricos</button>
                       </div>
                     </li>
                   ))
                 ) : (
-                  // 2. SUBSTITUIR O <p> PELO <EmptyState>
-                  <EmptyState message="Nenhum laboratório cadastrado." styles={styles} />
+                  <EmptyState message="Nenhum laboratório cadastrado." />
                 )}
               </ul>
             </div>
           )}
 
           {showManagePeripherals && (
-            <div style={styles.managementSection}>
+            <div className={styles.managementSection}>
               {currentLaboratory ? (
                 <>
-                  <h4 style={styles.subSectionTitle}>Periféricos do Laboratório: {currentLaboratory.name} (ID: {currentLaboratory.id})</h4>
-                  <button onClick={() => {setShowPeripheralForm(true); setCurrentPeripheral(null);}} style={styles.createButton}>
+                  <h4 className={commonStyles.subSectionTitle}>Periféricos do Laboratório: {currentLaboratory.name} (ID: {currentLaboratory.id})</h4>
+                  <button onClick={() => {setShowPeripheralForm(true); setCurrentPeripheral(null);}} className={commonStyles.createButton}>
                     + Adicionar Novo Periférico a {currentLaboratory.name}
                   </button>
-                  <button onClick={() => {setShowManagePeripherals(false); setCurrentLaboratory(null);}} style={styles.backButton}>
-                    ← Voltar para Gerenciar Labs
+                  <button onClick={() => {setShowManagePeripherals(false); setCurrentLaboratory(null);}} className={commonStyles.backButton}>
+                    ← Voltar
                   </button>
 
                   {showPeripheralForm && (
@@ -193,36 +257,35 @@ const AdminDashboard = ({
                       peripheral={currentPeripheral}
                       onSave={handleCreateOrUpdatePeripheral}
                       onCancel={() => setShowPeripheralForm(false)}
-                      styles={styles}
+                      commonStyles={commonStyles}
                     />
                   )}
                   
                   {isPeripheralsLoading ? (
-                    <p style={styles.noDataText}>Carregando periféricos...</p>
+                    <p className={commonStyles.noDataText}>Carregando periféricos...</p>
                   ) : (
-                    <ul style={styles.list}>
+                    <ul className={commonStyles.list}>
                       {peripheralsOfCurrentLab.length > 0 ? (
                         peripheralsOfCurrentLab.map((peripheral) => (
-                          <li key={peripheral.id} style={styles.listItem}>
+                          <li key={peripheral.id} className={commonStyles.listItem}>
                             <strong>{peripheral.name}</strong> (ID: {peripheral.id})<br />
                             Descrição: {peripheral.description}<br />
                             Quantidade: {peripheral.quantity}<br />
                             Status: {peripheral.active ? <span style={{color: 'var(--success-color)'}}>Ativo</span> : <span style={{color: 'var(--error-color)'}}>Inativo</span>}
-                            <div style={styles.actionButtons}>
-                              <button onClick={() => {setShowPeripheralForm(true); setCurrentPeripheral(peripheral);}} style={styles.editButton}>Editar</button>
-                              <button onClick={() => handleDeletePeripheral(peripheral.id)} style={styles.deleteButton}>Desativar</button>
+                            <div className={commonStyles.buttonGroup} style={{justifyContent: 'flex-end', marginTop: '0.8rem'}}>
+                              <button onClick={() => {setShowPeripheralForm(true); setCurrentPeripheral(peripheral);}} className={commonStyles.editButton}>Editar</button>
+                              <button onClick={() => handleDeletePeripheral(peripheral.id)} className={commonStyles.deleteButton}>Desativar</button>
                             </div>
                           </li>
                         ))
                       ) : (
-                        // 3. SUBSTITUIR O <p> PELO <EmptyState>
-                        <EmptyState message="Nenhum periférico cadastrado para este laboratório." styles={styles} />
+                        <EmptyState message="Nenhum periférico cadastrado para este laboratório." />
                       )}
                     </ul>
                   )}
                 </>
               ) : (
-                <p style={styles.noDataText}>Selecione um laboratório para gerenciar seus periféricos, ou volte e gerencie laboratórios primeiro.</p>
+                <p className={commonStyles.noDataText}>Selecione um laboratório para gerenciar seus periféricos, ou volte e gerencie laboratórios primeiro.</p>
               )}
             </div>
           )}
